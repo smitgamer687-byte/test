@@ -3,7 +3,7 @@ import requests
 import os
 from datetime import datetime
 
-app = Flask(__name__)
+app = Flask(_name_)
 
 # Configuration - Environment Variables se load hoga
 API_KEY = os.environ.get('API_KEY', '86db3795785983d81d077bd7238adbd1')
@@ -334,15 +334,15 @@ HTML_TEMPLATE = """
                             <p><strong>${statusEmoji} Status:</strong> ${txnStatus}</p>
                             <p><strong>Amount:</strong> ₹${data.result.amount}</p>
                             <p><strong>Order ID:</strong> ${data.result.orderId}</p>
-                            ${data.result.date ? `<p><strong>Date:</strong> ${data.result.date}</p>` : ''}
-                            ${data.result.utr ? `<p><strong>UTR:</strong> ${data.result.utr}</p>` : ''}
+                            ${data.result.date ? <p><strong>Date:</strong> ${data.result.date}</p> : ''}
+                            ${data.result.utr ? <p><strong>UTR:</strong> ${data.result.utr}</p> : ''}
                         </div>
                     `;
                 } else {
-                    statusDiv.innerHTML = `<p class="error">❌ ${data.message}</p>`;
+                    statusDiv.innerHTML = <p class="error">❌ ${data.message}</p>;
                 }
             } catch (error) {
-                statusDiv.innerHTML = `<p class="error">❌ Error: ${error.message}</p>`;
+                statusDiv.innerHTML = <p class="error">❌ Error: ${error.message}</p>;
             }
         }
         
@@ -387,10 +387,10 @@ def generate_link():
         endpoint = f"{BASE_URL}/api/create-order"
         payload = {
             "customer_mobile": mobile,
-            "user_token": API_KEY,  # API_KEY ko user_token field me bhejte hain
+            "user_token": API_KEY,
             "amount": str(amount),
             "order_id": order_id,
-            "redirect_url": webhook_url,  # Yahan webhook URL dalna hai
+            "redirect_url": webhook_url,
             "remark1": remark,
             "remark2": f"Generated: {datetime.now().strftime('%d-%m-%Y %H:%M:%S')}"
         }
@@ -413,7 +413,8 @@ def generate_link():
         print(f"API Response Status: {response.status_code}")
         print(f"API Response: {response.text}")
         
-        if response.status_code == 200:
+        # Accept both 200 and 201 status codes (both indicate success)
+        if response.status_code in [200, 201]:
             result = response.json()
             if result.get('status'):
                 payment_url = result.get('result', {}).get('payment_url', '')
@@ -546,7 +547,7 @@ def check_status():
         
         url = f"{BASE_URL}/api/check-order-status"
         payload = {
-            "user_token": API_KEY,  # API_KEY ko user_token field me bhejte hain
+            "user_token": API_KEY,
             "order_id": order_id
         }
         
@@ -554,7 +555,8 @@ def check_status():
         
         response = requests.post(url, data=payload, timeout=10)
         
-        if response.status_code == 200:
+        # Accept both 200 and 201 status codes
+        if response.status_code in [200, 201]:
             result = response.json()
             print(f"Status Response: {result}")
             return jsonify(result)
@@ -593,7 +595,7 @@ def not_found(e):
 def server_error(e):
     return jsonify({'error': 'Internal server error'}), 500
 
-if __name__ == '__main__':
+if _name_ == '_main_':
     port = int(os.environ.get('PORT', 5000))
     print("\n" + "=" * 60)
     print("🚀 Payment System Starting...")
