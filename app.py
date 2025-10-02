@@ -194,7 +194,7 @@ HTML_TEMPLATE = """
             <button class="copy-btn" onclick="copyWebhook()" style="margin-top: 10px;">📋 Copy Webhook URL</button>
         </div>
         
-        <form id="paymentForm" style="margin-top: 20px;">
+        <form id="paymentForm" method="post" action="javascript:void(0);" style="margin-top: 20px;">
             <div class="form-group">
                 <label for="amount">Amount (₹)</label>
                 <input type="number" id="amount" name="amount" required min="1" placeholder="Enter amount" value="50">
@@ -226,8 +226,10 @@ HTML_TEMPLATE = """
     <script>
         let currentOrderId = '';
         
+        // Prevent form from submitting through URL parameters
         document.getElementById('paymentForm').addEventListener('submit', async (e) => {
             e.preventDefault();
+            e.stopPropagation();
             
             const submitBtn = document.getElementById('submitBtn');
             const amount = document.getElementById('amount').value;
