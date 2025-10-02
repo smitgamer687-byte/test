@@ -3,7 +3,7 @@ import requests
 import os
 from datetime import datetime
 
-app = Flask(_name_)
+app = Flask(__name__)
 
 # Configuration - Environment Variables se load hoga
 API_KEY = os.environ.get('API_KEY', '86db3795785983d81d077bd7238adbd1')
