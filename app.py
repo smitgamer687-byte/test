@@ -595,7 +595,7 @@ def not_found(e):
 def server_error(e):
     return jsonify({'error': 'Internal server error'}), 500
 
-if _name_ == '_main_':
+if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     print("\n" + "=" * 60)
     print("🚀 Payment System Starting...")
